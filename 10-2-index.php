@@ -20,7 +20,7 @@ $books = [
         'purchaseUrl' => 'http://example.com'
     ]
 ];
-
+0
 // call function
 $filteredBooks = array_filter($books, function ($book) {
     return $book['releaseYear'] >= 2000;
