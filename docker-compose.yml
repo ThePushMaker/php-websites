@@ -1,0 +1,27 @@
+services:
+  www: 
+    image: my-php-apache # allows to open .php pages
+    volumes:
+      - "./:/var/www/html" # sync project dir with container web dir
+    ports:
+      - 80:80
+      - 443:443 # for future ssl traffic
+  db:
+    image: mysql:latest
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ALLOW_EMPTY_PASSWORD=1 # equivalent to true
+    volumes:
+      - "./db:/docker-entrypoint-initdb.d" # sync persistent sql files with container
+      - "mysql-data:/var/lib/mysql"
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - 8001:80
+    environment:
+      - PMA_HOST=db
+      - PMA_PORT=3306
+volumes:
+  mysql-data:
