@@ -4,15 +4,14 @@ class Database
 {
   public $connection;
   
-  public function __construct()
+  public function __construct($config, $user = 'root', $pass = '')
   {
-    // env variables
-    $dotenv = parse_ini_file('.env', true);
-
-    // connect to our MySQL database usin PDO
-    $dsn = "mysql:host={$dotenv['DB_HOST']};port={$dotenv['DB_PORT']};dbname={$dotenv['DB_NAME']};user={$dotenv['DB_USER']};password={$dotenv['DB_PASSWORD']};charset=utf8mb4";
+    // connect to our MySQL database using PDO
+    $dsn = 'mysql:' . http_build_query($config, '', ';');
     
-    $this->connection = new PDO($dsn);
+    $this->connection = new PDO($dsn, $user, $pass, [
+      PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+    ]);
   }
   
   public function query($query)

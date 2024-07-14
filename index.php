@@ -2,12 +2,15 @@
 
 require 'functions.php';
 // require 'router.php';
-
 require 'Database.php';
 
+// env variables
+$dotenv = parse_ini_file('.env', true);
 
-$db = new Database();
+$config = require('config.php');
 
-$posts = $db->query("SELECT * FROM Posts where id = 1")->fetch(PDO::FETCH_ASSOC);
+$db = new Database($config['database'], $dotenv['DB_USER'], $dotenv['DB_PASSWORD']);
+
+$posts = $db->query("SELECT * FROM Posts where id = 1")->fetch();
 
 dd($posts);
